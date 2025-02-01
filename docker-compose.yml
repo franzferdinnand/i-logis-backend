@@ -1,0 +1,20 @@
+version: "1.0"
+
+services:
+  web:
+    build: .
+    volumes:
+      - static_value:/app/static/
+      - media_value:/app/media/
+    ports:
+      - "8182:8000"
+    networks:
+      - i-logis_network
+
+volumes:
+  static_value:
+  media_value:
+
+networks:
+  i-logis_network:
+    driver: bridge

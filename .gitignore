@@ -188,3 +188,4 @@ fabric.properties
 #django migrations
 **/migrations/*
 !**/migrations/__init__.py
+.idea/

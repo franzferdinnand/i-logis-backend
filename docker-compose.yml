@@ -1,19 +1,53 @@
 version: "1.0"
 
 services:
+
+  postgres:
+    image: postgres:latest
+    volumes:
+      - pg_data:/var/lib/postgreql/data
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    networks:
+      - i-logis_network
+
+  pg_admin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    restart: on-failure
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - web
+    networks:
+      - i-logis_network
+
   web:
     build: .
     volumes:
+      - .:/app
       - static_value:/app/static/
       - media_value:/app/media/
+    env_file:
+      - .env
     ports:
       - "8182:8000"
+    depends_on:
+      - postgres
     networks:
       - i-logis_network
 
 volumes:
   static_value:
   media_value:
+  pg_data:
+  pgadmin_data:
 
 networks:
   i-logis_network:
